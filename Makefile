@@ -4,7 +4,7 @@ WORKERS ?= 2
 
 init:
 	mkdir -p scripts data spark-logs warehouse notebooks
-	[ -f .env.spark ] || cp .env.spark.example .env.spark
+	[ -f .env ] || cp .env.example .env
 
 up: init
 	docker compose up -d --scale spark-worker=$(WORKERS)
