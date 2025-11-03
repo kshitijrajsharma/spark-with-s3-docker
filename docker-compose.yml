@@ -50,7 +50,7 @@ services:
     depends_on:
       - spark-master
     volumes:
-      - ${NOTEBOOKS_PATH:-./notebooks}:/home/jovyan/work
+      - ${NOTEBOOKS_PATH:-./notebooks}:/home/jovyan/notebooks
       - ${SCRIPTS_PATH:-./scripts}:/home/jovyan/scripts
       - ${DATA_PATH:-./data}:/home/jovyan/data
     ports:
