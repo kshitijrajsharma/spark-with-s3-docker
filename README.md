@@ -30,9 +30,7 @@ make test
 you can also do it manually to submit jobs :
 
 ```bash
-	docker exec spark-master /opt/spark/bin/spark-submit \
-		--master spark://spark-master:7077 \
-		/opt/spark/scripts/test_wordcount.py
+	docker exec spark-master spark-submit scripts/test_wordcount.py
 ```
 
 #### Test with Jupyter
