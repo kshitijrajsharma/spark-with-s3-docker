@@ -47,12 +47,14 @@ services:
       - JUPYTER_ENABLE_LAB=yes
       - JUPYTER_TOKEN=${JUPYTER_TOKEN:-spark}
       - SPARK_MASTER_URL=spark://spark-master:${MASTER_PORT:-7077}
+      - PYSPARK_PYTHON=python3
+      - PYSPARK_DRIVER_PYTHON=python3
     depends_on:
       - spark-master
     volumes:
       - ${NOTEBOOKS_PATH:-./notebooks}:/home/jovyan/notebooks
-      - ${SCRIPTS_PATH:-./scripts}:/home/jovyan/scripts
-      - ${DATA_PATH:-./data}:/home/jovyan/data
+      - ${SCRIPTS_PATH:-./scripts}:/opt/spark/work-dir/scripts
+      - ${DATA_PATH:-./data}:/opt/spark/work-dir/data
     ports:
       - '${JUPYTER_PORT:-8889}:8888'
 
