@@ -12,7 +12,12 @@ up: init
 down:
 	docker compose down
 
-restart: down up
+restart: down up 
+
+rebuild: 
+	docker compose down
+	docker compose build --no-cache
+	docker compose up -d --scale spark-worker=$(WORKERS)
 
 logs:
 	docker compose logs -f
