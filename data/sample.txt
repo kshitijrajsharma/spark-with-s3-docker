@@ -1,0 +1,30 @@
+Sahar works with distributed data processing systems every day.
+Kshitij manages the Spark cluster configuration and deployment.
+Rabina develops machine learning pipelines using PySpark.
+
+Apache Spark is a unified analytics engine for large-scale data processing.
+Spark provides high-level APIs in Python, Java, Scala, and R.
+PySpark is the Python API for Apache Spark.
+
+Docker makes it easy to deploy Spark clusters.
+You can quickly spin up master and worker nodes using docker compose.
+Scaling workers is simple with docker compose scale command.
+
+Parallel processing is a key feature of Spark.
+Data is distributed across worker nodes for parallel computation.
+The more workers you add, the more processing power you have.
+Each worker processes data independently and in parallel.
+
+Sahar tested the cluster with two workers initially.
+Kshitij scaled it to five workers for larger datasets.
+Rabina verified that all workers were processing tasks correctly.
+Kshitij thinks that Manu can do some backend work if ola can do frontend but don't know
+they don't seem to  be too confident
+
+The Spark master coordinates work distribution across workers.
+The history server tracks all completed Spark applications.
+JupyterLab provides an interactive environment for data exploration.
+
+Testing the cluster ensures all components work correctly.
+Word count examples verify parallel processing capability.
+Monitoring the Spark UI shows task distribution across workers.
