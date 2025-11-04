@@ -4,36 +4,52 @@ x-spark-volumes: &spark-volumes
   - ${LOGS_PATH:-./spark-logs}:/opt/spark/spark-events
   - ${WAREHOUSE_PATH:-./warehouse}:/opt/spark/work-dir/warehouse
   - ~/.aws:/root/.aws
+
 services:
   spark-master:
-    image: apache/spark:3.5.7-python3
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
     container_name: spark-master
     command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
     environment:
       - SPARK_MASTER_PORT=${MASTER_PORT:-7077}
       - SPARK_MASTER_WEBUI_PORT=${MASTER_UI_PORT:-8080}
       - PATH=/opt/spark/bin:/opt/spark/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
     volumes: *spark-volumes
     ports:
       - '${MASTER_UI_PORT:-8080}:8080'
       - '${MASTER_PORT:-7077}:7077'
 
   spark-worker:
-    image: apache/spark:3.5.7-python3
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:${MASTER_PORT:-7077}
     environment:
       - SPARK_WORKER_CORES=${SPARK_WORKER_CORES:-2}
       - SPARK_WORKER_MEMORY=${SPARK_WORKER_MEMORY:-2g}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
     depends_on:
       - spark-master
     volumes: *spark-volumes
 
   spark-history:
-    image: apache/spark:3.5.7-python3
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
     container_name: spark-history
     command: /opt/spark/bin/spark-class org.apache.spark.deploy.history.HistoryServer
     environment:
       - SPARK_HISTORY_OPTS=-Dspark.history.fs.logDirectory=/opt/spark/spark-events
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
     depends_on:
       - spark-master
     volumes: *spark-volumes
@@ -41,19 +57,23 @@ services:
       - '${HISTORY_UI_PORT:-18080}:18080'
 
   jupyter:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.jupyter
     container_name: spark-jupyter
     environment:
       - JUPYTER_TOKEN=${JUPYTER_TOKEN:-spark}
       - SPARK_MASTER_URL=spark://spark-master:${MASTER_PORT:-7077}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
     depends_on:
       - spark-master
     volumes:
       - ${NOTEBOOKS_PATH:-./notebooks}:/home/jovyan/notebooks
       - ${SCRIPTS_PATH:-./scripts}:/opt/spark/work-dir/scripts
       - ${DATA_PATH:-./data}:/opt/spark/work-dir/data
-      - ~/.aws:/home/jovyan/.aws
-
+      - ~/.aws:/root/.aws
     ports:
       - '${JUPYTER_PORT:-8889}:8888'
 
