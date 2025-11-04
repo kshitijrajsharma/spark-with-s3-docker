@@ -7,7 +7,7 @@ x-spark-volumes: &spark-volumes
 
 services:
   spark-master:
-    image: ${SPARK_IMAGE:-ghcr.io/kshitijrajsharma/spark-aws:latest}
+    # image: ${SPARK_IMAGE:-ghcr.io/kshitijrajsharma/spark-aws:latest}
     build:
       context: .
       dockerfile: Dockerfile.spark
@@ -26,7 +26,7 @@ services:
       - '${MASTER_PORT:-7077}:7077'
 
   spark-worker:
-    image: ${SPARK_IMAGE:-ghcr.io/kshitijrajsharma/spark-aws:latest}
+    # image: ${SPARK_IMAGE:-ghcr.io/kshitijrajsharma/spark-aws:latest}
     build:
       context: .
       dockerfile: Dockerfile.spark
@@ -42,7 +42,7 @@ services:
     volumes: *spark-volumes
 
   spark-history:
-    image: ${SPARK_IMAGE:-ghcr.io/kshitijrajsharma/spark-aws:latest}
+    # image: ${SPARK_IMAGE:-ghcr.io/kshitijrajsharma/spark-aws:latest}
     build:
       context: .
       dockerfile: Dockerfile.spark
@@ -60,7 +60,7 @@ services:
       - '${HISTORY_UI_PORT:-18080}:18080'
 
   jupyter:
-    image: ${JUPYTER_IMAGE:-ghcr.io/kshitijrajsharma/spark-jupyter:latest}
+    # image: ${JUPYTER_IMAGE:-ghcr.io/kshitijrajsharma/spark-jupyter:latest}
     build:
       context: .
       dockerfile: Dockerfile.jupyter
