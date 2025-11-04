@@ -6,6 +6,6 @@ RUN wget -P /opt/spark/jars/ https://repo1.maven.org/maven2/org/apache/hadoop/ha
     wget -P /opt/spark/jars/ https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.767/aws-java-sdk-bundle-1.12.767.jar && \
     wget -P /opt/spark/jars/ https://repo1.maven.org/maven2/ch/cern/sparkmeasure/spark-measure_2.12/0.24/spark-measure_2.12-0.24.jar
 
-RUN pip install sparkmeasure
+RUN pip install sparkmeasure  pandas numpy matplotlib pyspark==3.5.7
 
 USER spark
