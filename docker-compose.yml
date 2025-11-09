@@ -84,10 +84,8 @@ services:
     depends_on:
       - spark-master
     volumes:
+      - *spark-volumes
       - ${NOTEBOOKS_PATH:-./notebooks}:/home/jovyan/notebooks
-      - ${SCRIPTS_PATH:-./scripts}:/opt/spark/work-dir/scripts
-      - ${DATA_PATH:-./data}:/opt/spark/work-dir/data
-      - ~/.aws:/root/.aws
     ports:
       - '${JUPYTER_PORT:-8889}:8888'
 
