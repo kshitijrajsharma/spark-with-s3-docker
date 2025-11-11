@@ -34,7 +34,13 @@ scale:
 	docker compose up -d --scale spark-worker=$(N)
 
 test:
-	docker exec spark-master spark-submit scripts/test_wordcount.py
+	docker exec spark-master spark-submit \
+		--master spark://spark-master:7077 \
+		--driver-memory 1g \
+		--executor-memory 2g \
+		--executor-cores 2 \
+		--total-executor-cores 4 \
+		scripts/test_wordcount.py
 
 clean:
 	docker compose down -v
