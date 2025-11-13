@@ -1,6 +1,6 @@
 .PHONY: init up down restart logs scale clean test build update
 
-WORKERS ?= 2
+WORKERS ?= 1
 
 init:
 	mkdir -p scripts data spark-logs spark-results warehouse notebooks

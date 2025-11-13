@@ -44,6 +44,14 @@ services:
     depends_on:
       - spark-master
     volumes: *spark-volumes
+    deploy:
+      resources:
+        limits:
+          cpus: '${SPARK_WORKER_CORES:-2}'
+          memory: ${SPARK_WORKER_MEMORY:-4g}
+        reservations:
+          cpus: '${SPARK_WORKER_CORES:-2}'
+          memory: ${SPARK_WORKER_MEMORY:-4g}
 
   spark-history:
     image: ${SPARK_IMAGE:-ghcr.io/kshitijrajsharma/spark-aws:latest}
