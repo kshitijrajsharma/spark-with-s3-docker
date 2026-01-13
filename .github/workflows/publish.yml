@@ -58,6 +58,30 @@ jobs:
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64
 
+
+      - name: Extract metadata for Spark image
+        id: meta-spark-petastorm
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/spark-aws-petastorm
+          tags: |
+            type=raw,value=${{ github.event.inputs.tag || 'latest' }}
+            type=raw,value=spark-${{ env.SPARK_VERSION }}
+            type=raw,value=${{ env.SPARK_VERSION }}
+            type=sha,prefix=
+
+      - name: Build and push Spark image with Petastorm
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.peta
+          push: true
+          tags: ${{ steps.meta-spark-petastorm.outputs.tags }}
+          labels: ${{ steps.meta-spark-petastorm.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+
       - name: Extract metadata for Jupyter image
         id: meta-jupyter
         uses: docker/metadata-action@v5
