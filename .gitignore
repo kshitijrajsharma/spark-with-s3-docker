@@ -4,3 +4,4 @@ spark-logs
 spark-warehouse/
 .DS_Store
 __pycache__/
+# Makefile

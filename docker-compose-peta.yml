@@ -72,10 +72,10 @@ services:
       - '${HISTORY_UI_PORT:-18080}:18080'
 
   jupyter:
-    image: ${JUPYTER_IMAGE:-ghcr.io/kshitijrajsharma/spark-jupyter:latest}
+    image: ${JUPYTER_IMAGE:-ghcr.io/kshitijrajsharma/spark-petastorm-jupyter:latest}
     build:
       context: .
-      dockerfile: Dockerfile.jupyter
+      dockerfile: Dockerfile.peta.jupyter
     container_name: spark-jupyter
     environment:
       - JUPYTER_TOKEN=${JUPYTER_TOKEN:-spark}
