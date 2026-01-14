@@ -6,16 +6,12 @@ RUN wget -P /opt/spark/jars/ https://repo1.maven.org/maven2/org/apache/hadoop/ha
     wget -P /opt/spark/jars/ https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.767/aws-java-sdk-bundle-1.12.767.jar && \
     wget -P /opt/spark/jars/ https://repo1.maven.org/maven2/ch/cern/sparkmeasure/spark-measure_2.12/0.24/spark-measure_2.12-0.24.jar
 
-RUN pip install \
-    "boto3" \
-    "matplotlib" \
-    "petastorm<0.14" \
-    "pyarrow<11" \
-    "tensorflow<=2.17" \
-    "tqdm>=4.67.1" \
-    "numpy<2" \
-    "pandas<2" \
-    "sparkmeasure" \
-    "pyspark==3.5.7"
+RUN apt-get update && apt-get install -y --no-install-recommends pkg-config libhdf5-dev && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir --prefer-binary "numpy<2" "pandas<2" && \
+    pip install --no-cache-dir --prefer-binary "pyarrow<11" "boto3" "matplotlib" "tqdm>=4.67.1" && \
+    pip install --no-cache-dir --prefer-binary "pyspark==3.5.7" "sparkmeasure" && \
+    pip install --no-cache-dir --prefer-binary "petastorm[all]<0.14" && \
+    pip install --no-cache-dir --prefer-binary "tensorflow<=2.17"
 
 USER spark
