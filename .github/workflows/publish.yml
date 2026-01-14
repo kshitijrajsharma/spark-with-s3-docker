@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag for Docker images (e.g., latest, v1.0.0)'
+        description: "Tag for Docker images (e.g., latest, v1.0.0)"
         required: true
-        default: 'latest'
+        default: "latest"
 
 env:
   SPARK_VERSION: 3.5.7
@@ -54,10 +54,9 @@ jobs:
           push: true
           tags: ${{ steps.meta-spark.outputs.tags }}
           labels: ${{ steps.meta-spark.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=spark-aws
+          cache-to: type=gha,mode=max,scope=spark-aws
           platforms: linux/amd64,linux/arm64
-
 
       - name: Extract metadata for Spark image
         id: meta-spark-petastorm
@@ -78,8 +77,8 @@ jobs:
           push: true
           tags: ${{ steps.meta-spark-petastorm.outputs.tags }}
           labels: ${{ steps.meta-spark-petastorm.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=spark-petastorm
+          cache-to: type=gha,mode=max,scope=spark-petastorm
           platforms: linux/amd64,linux/arm64
 
       - name: Extract metadata for Jupyter image
@@ -101,8 +100,8 @@ jobs:
           push: true
           tags: ${{ steps.meta-jupyter.outputs.tags }}
           labels: ${{ steps.meta-jupyter.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=spark-jupyter
+          cache-to: type=gha,mode=max,scope=spark-jupyter
           platforms: linux/amd64,linux/arm64
 
       - name: Extract metadata for Petastorm Jupyter image
@@ -124,6 +123,6 @@ jobs:
           push: true
           tags: ${{ steps.meta-jupyter-petastorm.outputs.tags }}
           labels: ${{ steps.meta-jupyter-petastorm.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=petastorm-jupyter
+          cache-to: type=gha,mode=max,scope=petastorm-jupyter
           platforms: linux/amd64,linux/arm64
