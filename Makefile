@@ -1,6 +1,14 @@
 .PHONY: init up down restart logs scale clean test build update
 
 WORKERS ?= 1
+PETA ?= 1
+
+# Select docker-compose file based on PETA flag
+ifeq ($(PETA),1)
+	COMPOSE_FILE = -f docker-compose-peta.yml
+else
+	COMPOSE_FILE = -f docker-compose.yml
+endif
 
 init:
 	mkdir -p scripts data spark-logs spark-results warehouse notebooks
@@ -9,29 +17,29 @@ init:
 	[ -f .env ] || cp .env.example .env
 
 build: init
-	docker compose build
+	docker compose $(COMPOSE_FILE) build
 
 up: init
-	docker compose up -d --scale spark-worker=$(WORKERS)
+	docker compose $(COMPOSE_FILE) up -d --scale spark-worker=$(WORKERS)
 
 down:
-	docker compose down
+	docker compose $(COMPOSE_FILE) down
 
 restart: down up 
 
 rebuild: 
-	docker compose down
-	docker compose build --no-cache
-	docker compose up -d --scale spark-worker=$(WORKERS)
+	docker compose $(COMPOSE_FILE) down
+	docker compose $(COMPOSE_FILE) build --no-cache
+	docker compose $(COMPOSE_FILE) up -d --scale spark-worker=$(WORKERS)
 
 update:
-	docker compose pull
+	docker compose $(COMPOSE_FILE) pull
 
 logs:
-	docker compose logs -f
+	docker compose $(COMPOSE_FILE) logs -f
 
 scale:
-	docker compose up -d --scale spark-worker=$(N)
+	docker compose $(COMPOSE_FILE) up -d --scale spark-worker=$(N)
 
 test:
 	docker exec spark-master spark-submit \
@@ -43,5 +51,5 @@ test:
 		scripts/test_wordcount.py
 
 clean:
-	docker compose down -v
+	docker compose $(COMPOSE_FILE) down -v
 	rm -rf spark-logs/*  warehouse/*
