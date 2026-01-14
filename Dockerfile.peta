@@ -1,4 +1,4 @@
-FROM apache/spark:3.5.7-python3
+FROM apache/spark:3.5.7-python3 AS builder
 
 USER root
 
@@ -8,9 +8,21 @@ RUN wget -P /opt/spark/jars/ https://repo1.maven.org/maven2/org/apache/hadoop/ha
 
 RUN apt-get update && apt-get install -y --no-install-recommends pkg-config libhdf5-dev && rm -rf /var/lib/apt/lists/*
 
+FROM apache/spark:3.5.7-python3
+
+USER root
+
+COPY --from=builder /opt/spark/jars/*.jar /opt/spark/jars/
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    pkg-config \
+    libhdf5-dev \
+    libgdal-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN pip install --no-cache-dir --prefer-binary "numpy<2" "pandas<2" && \
     pip install --no-cache-dir --prefer-binary "pyarrow<11" "boto3" "matplotlib" "tqdm>=4.67.1" && \
-    pip install --no-cache-dir --prefer-binary "pyspark==3.5.7" "sparkmeasure" "geopandas<0.15.0" && \
+    pip install --no-cache-dir --prefer-binary "pyspark==3.5.7" "sparkmeasure" "rasterio" "geopandas<0.15.0" && \
     pip install --no-cache-dir --prefer-binary "petastorm[all]<0.14" && \
     pip install --no-cache-dir --prefer-binary "tensorflow<=2.17"
 
