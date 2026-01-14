@@ -1,3 +1,5 @@
+# docker build -t peta -f Dockerfile.peta .
+
 FROM apache/spark:3.5.7-python3 AS builder
 
 USER root
@@ -23,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip install --no-cache-dir --prefer-binary "numpy<2" "pandas<2" && \
     pip install --no-cache-dir --prefer-binary "pyarrow<11" "boto3" "matplotlib" "tqdm>=4.67.1" && \
     pip install --no-cache-dir --prefer-binary "pyspark==3.5.7" "sparkmeasure" "fiona<1.9" "rasterio<1.3" "geopandas<0.13" && \
-    pip install --no-cache-dir --prefer-binary "petastorm[all]<0.14" && \
+    pip install --no-cache-dir --prefer-binary "petastorm[all]<0.14" "s3fs==2023.12.2" && \
     pip install --no-cache-dir --prefer-binary "tensorflow<=2.17"
 
 USER spark
