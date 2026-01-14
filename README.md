@@ -32,6 +32,8 @@ make init
 make up
 ```
 
+> **Note:** Petastorm is enabled by default. Use `make up PETA=0` if you don't want Petastorm.
+
 - UIs:
   
   - Spark Master: http://localhost:8080
@@ -70,7 +72,8 @@ Check http://localhost:8080 to see 5 workers
 
 ### Commands
 
-- Start: `make up`
+- Start: `make up` (Petastorm enabled by default)
+- Start without Petastorm: `make up PETA=0`
 - Test script: `make test`
 - Scale workers: `make scale N=3`
 - View logs: `make logs`
