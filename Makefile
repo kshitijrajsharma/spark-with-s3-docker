@@ -22,6 +22,10 @@ build: init
 up: init
 	docker compose $(COMPOSE_FILE) up -d --scale spark-worker=$(WORKERS)
 
+
+pull: 
+	docker compose $(COMPOSE_FILE) pull
+
 down:
 	docker compose $(COMPOSE_FILE) down
 
