@@ -1,4 +1,11 @@
+
 .PHONY: init up down restart logs scale clean test build update
+
+# Info message for Spark services
+SPARK_SERVICES_INFO = \
+	\033[1;32mSpark Master:\033[0m    http://localhost:8080\n\
+	\033[1;32mSpark History:\033[0m   http://localhost:18080\n\
+	\033[1;32mJupyter:\033[0m         http://localhost:8889 (token: spark)\n
 
 WORKERS ?= 1
 PETA ?= 1
@@ -19,8 +26,11 @@ init:
 build: init
 	docker compose $(COMPOSE_FILE) build
 
+
 up: init
 	docker compose $(COMPOSE_FILE) up -d --scale spark-worker=$(WORKERS)
+	@echo
+	@echo "$(SPARK_SERVICES_INFO)"
 
 
 pull: 
@@ -29,7 +39,10 @@ pull:
 down:
 	docker compose $(COMPOSE_FILE) down
 
-restart: down up 
+
+restart: down up
+	@echo
+	@echo "$(SPARK_SERVICES_INFO)"
 
 rebuild: 
 	docker compose $(COMPOSE_FILE) down

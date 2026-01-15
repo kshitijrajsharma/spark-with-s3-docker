@@ -25,6 +25,17 @@ git clone https://github.com/kshitijrajsharma/spark-with-s3-docker.git
 cd spark-with-s3-docker
 ```
 
+- Put your notebooks and scripts in `.env` , take a look at example at `.env_example`
+
+```bash
+SCRIPTS_PATH=./scripts
+DATA_PATH=./data
+LOGS_PATH=./spark-logs
+WAREHOUSE_PATH=./warehouse
+NOTEBOOKS_PATH=./notebooks
+RESULTS_PATH=./spark-results
+```
+
 - Install and Run : 
 
 ```bash
